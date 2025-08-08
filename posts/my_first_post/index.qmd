@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: "My First post - Small Scale SSH Server "
 author: "Yoz Calderon"
 date: "2025-8-7"
@@ -21,6 +22,32 @@ I predict that the attacks will follow a pattern and there will be a clear relat
 
 **What is the data source you will use to help you answer your question(s)?**
 
+=======
+title: "My First post - SSH Honeypot"
+author: "Yoz Calderon"
+date: "2025-8-7"
+categories: [goals,general]
+---
+
+**Introduction**
+
+**What are your questions and why are they important?**
+
+My primary research questions are:
+
+1.     Do malicious login attempts follow predictable time-based patterns
+
+2.     Do these attack patterns vary based on their geographical origin?
+
+These questions are important because they shift cybersecurity from àpurely reactive stance to a more proactive one. Being able to identify when and from where attacks are mostly spawning from, organizations can increase their defensive resources, anticipate threats, and gain more knowledge on patterns on a global scale.
+
+**Predictions**
+
+I predict that the attacks will follow a pattern and there will be a clear relationship between time and attack frequency, that there will be more of a cluster at specific times.
+
+**What is the data source you will use to help you answer your question(s)?**
+
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 I will use a public dataset of logs from a SSH honeypot server, which captured real-world malicious login attempts.
 
 **Approach**
@@ -65,6 +92,7 @@ I will use a public dataset of logs from a SSH honeypot server, which captured r
 
 **Results**
 
+<<<<<<< HEAD
 The analysis of the SSH honeypot logs yielded clear answers to the primary research questions, revealing distinct patterns in attack timing and origin.
 
 **Time Based Patterns**
@@ -91,30 +119,67 @@ My second prediction—that the peak activity hours of the top two source countr
 #| warning: false
 #| paged-print: false
 
+=======
+**Code** This R code block loads the JSON data, cleans the timestamps, converts IP addresses to countries, and creates the final visualization.
+
+```{r}
+#| echo: false
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 library(jsonlite)
 library(dplyr)
 library(lubridate)
 library(rgeolocate)
 library(tidyverse)
 
+<<<<<<< HEAD
 ssh_logs <- fromJSON("brute_force_data.json")
 
 ssh_logs <- ssh_logs |>
   mutate(
     timestamp = parse_date_time(timestamp, orders = "%a %b %d %T %Y"),
 
+=======
+# Created a variable to store the json data & 
+# checked to make sure it worked
+ssh_logs <- fromJSON("brute_force_data.json")
+print(ssh_logs)
+
+# Reformed the data to create dates/times from strings & 
+# checked to make sure it worked
+ssh_logs <- ssh_logs |>
+  mutate(
+    timestamp = parse_date_time(timestamp, orders = "%a %b %d %T %Y"),
+    
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
     hour_of_day = hour(timestamp),
     day_of_week = wday(timestamp, label = TRUE, abbr = FALSE)
   )
 
+<<<<<<< HEAD
 results <- maxmind(ssh_logs$foreign_ip, "GeoLite2-Country.mmdb")
 
 ssh_logs$country <- results$country_name
 
+=======
+# I created a maxmind account to be able to get GeoLite2-Country file 
+# to tranlate IP addresses to actual countries & stored it into a variable
+results <- maxmind(ssh_logs$foreign_ip, "GeoLite2-Country.mmdb")
+
+# Now send the new data to the ssh_logs
+ssh_logs$country <- results$country_name
+
+# Creating a summary of attack by day and hour 
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 time_summary <- ssh_logs |> 
   group_by(day_of_week, hour_of_day) |>
   summarise(attack_count = n(), .groups = 'drop')
 
+<<<<<<< HEAD
+=======
+# 1 - When are attacks the most freq?
+# For the fun part, creating the damn heatmap...
+# ssh_freq_day_hour <-
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 ggplot(time_summary, aes(x = hour_of_day, y = day_of_week, fill = attack_count)) + 
   geom_tile(color = "white") + 
   scale_fill_gradient(name = "Attack Count") + 
@@ -125,11 +190,22 @@ ggplot(time_summary, aes(x = hour_of_day, y = day_of_week, fill = attack_count))
   ) + 
   theme_minimal()
 
+<<<<<<< HEAD
+=======
+# 2 - Where do the attacks come from and are the patterns differ?
+# Making a bar chart to see the amount of attacks coming from each country 
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 top_countries <- ssh_logs |>
   group_by(country) |>
   summarise(total_attacks = n()) |>
   slice_max(order_by = total_attacks, n = 10)
+<<<<<<< HEAD
 
+=======
+# Always double check your work
+print(top_countries)
+# Made a bar graph to show the differences in top 10 countries
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 ggplot(
   top_countries, 
   aes(x = country, y = total_attacks)) +
@@ -141,11 +217,21 @@ ggplot(
   ) +
   theme_bw()
 
+<<<<<<< HEAD
 filtered_countries <- 
   ssh_logs |>
     filter(country %in% top_countries$country) |>
     group_by(country, hour_of_day) |>
     summarise(attack_count = n(), .groups = 'drop') 
+=======
+# Filtered out countries to count the amount of attack happening at each hour of 
+# the day in those countries then represented them in a bar graph
+filtered_countries <- 
+  ssh_logs |>
+  filter(country %in% top_countries$country) |>
+  group_by(country, hour_of_day) |>
+  summarise(attack_count = n(), .groups = 'drop') 
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 ggplot(
   filtered_countries,
   aes(x = hour_of_day, y = attack_count, fill = country)) + 
@@ -156,7 +242,10 @@ ggplot(
         x = "Hour of the Day", y = "Number of Attacks" ) + 
   theme_light() + 
   theme(legend.position = "none") 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
 ```
 
 **Key Figure**
@@ -167,6 +256,7 @@ ggplot(
 
 **Figure 3.** Distribution of malicious SSH login attempts by hour of the day, broken down by the top ten source countries from **Figure 2**. Each panel represents a different country, showing its unique 24-hour attack pattern.
 
+<<<<<<< HEAD
 This investigation set out to determine if malicious SSH login attempts follow predictable time-based and geographical patterns. The analysis of the honeypot data confirms that they do, providing clear, actionable intelligence for strengthening cybersecurity defenses.
 
 **Conclusion**
@@ -186,3 +276,12 @@ The strategic implication of these findings is profound. Defending against this 
 -   **Efficient Resource Allocation**: Security teams can heighten monitoring and adjust firewall scrutiny during the identified peak windows (Sunday-Wednesday) to catch anomalies more effectively.
 
 It is important to acknowledge the limitations of this study. The findings are based on a single honeypot server and may not be generalizable to the entire internet. Furthermore, the complete absence of attacks on Thursday and Friday warrants further investigation with a longer-term dataset to determine if this is a consistent operational pause or an artifact of the data collection period.
+=======
+**Conclusion** Malicious login attempts follow distinct hourly patterns that vary significantly depending on their country of origin.
+
+**Discussion**
+
+**Was your hypothesis supported, undermined, or no determination?** My hypotheses were **strongly supported** by the data visualization.
+
+**How have you updated your beliefs, and why?** I now **believe in my hypothesis more**. My initial prediction was that patterns existed, but the visualization revealed that these patterns are not just present; they are distinct "fingerprints" for different geographic regions. For example, one country might show a 24/7 automated pattern, while another shows clear peaks and troughs that might correspond to their local business hours. This moves my belief from a general assumption that "attacks aren't random" to a more nuanced understanding that "the operational methods of attackers vary by region, and this is visibly reflected in their temporal data." The validity of the approach was confirmed by the clear and interpretable results.
+>>>>>>> 5a9cbc772bbc79d1cbfb54023144017de7187e4a
