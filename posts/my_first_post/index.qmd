@@ -91,16 +91,13 @@ ssh_logs <- ssh_logs |>
     hour_of_day = hour(timestamp),
     day_of_week = wday(timestamp, label = TRUE, abbr = FALSE)
   )
-print(ssh_logs)
 
 # I created a maxmind account to be able to get GeoLite2-Country file 
 # to tranlate IP addresses to actual countries & stored it into a variable
 results <- maxmind(ssh_logs$foreign_ip, "GeoLite2-Country.mmdb")
-print(results) # Didn't know it created columns for you
 
 # Now send the new data to the ssh_logs
 ssh_logs$country <- results$country_name
-print(ssh_logs)
 
 # Creating a summary of attack by day and hour 
 time_summary <- ssh_logs |> 
@@ -157,8 +154,6 @@ ggplot(
         x = "Hour of the Day", y = "Number of Attacks" ) + 
   theme_light() + 
   theme(legend.position = "none") 
-
-nrow(ssh_logs)
 ```
 
 **Key Figure**
