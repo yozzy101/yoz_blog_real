@@ -39,7 +39,7 @@ My primary research questions are:
 
 2.     Do these attack patterns vary based on their geographical origin?
 
-These questions are important because they shift cybersecurity from àpurely reactive stance to a more proactive one. Being able to identify when and from where attacks are mostly spawning from, organizations can increase their defensive resources, anticipate threats, and gain more knowledge on patterns on a global scale.
+These questions are important because they shift cybersecurity from a purely reactive stance to a more proactive one. Being able to identify when and from where attacks are mostly spawning from, organizations can increase their defensive resources, anticipate threats, and gain more knowledge on patterns on a global scale.
 
 **Predictions**
 
